@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PropGlue - The all-in-one property management platform. Manage buildings, documents, permits, violations, contractors, and equipment in one place.">
+  <meta name="keywords" content="property management, building management, NYC DOB, permits, violations, document management">
+  <title>PropGlue - Property Management Platform</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #002D72;
+      --primary-dark: #001B45;
+      --accent: #FF5910;
+      --accent-hover: #E84E0E;
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --text: #1E293B;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      padding: 16px 0;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      background: var(--accent);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 89, 16, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 140px 0 80px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: rgba(255, 89, 16, 0.1);
+      border-radius: 50%;
+      filter: blur(80px);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      font-size: clamp(18px, 2.5vw, 22px);
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Features */
+    .features {
+      padding: 80px 0;
+      background: white;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 60px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .section-header p {
+      font-size: 18px;
+      color: var(--text-muted);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+      margin-top: 60px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 45, 114, 0.08);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--accent), #FF7940);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Use Cases */
+    .use-cases {
+      padding: 80px 0;
+      background: var(--bg);
+    }
+
+    .use-case-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 60px;
+    }
+
+    .use-case {
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      border-left: 4px solid var(--accent);
+      transition: all 0.3s;
+    }
+
+    .use-case:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transform: translateX(4px);
+    }
+
+    .use-case h4 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .use-case p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    /* Testimonials */
+    .testimonials {
+      padding: 80px 0;
+      background: white;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+      margin-top: 60px;
+    }
+
+    .testimonial {
+      background: var(--bg);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+    }
+
+    .quote-icon {
+      font-size: 48px;
+      color: var(--accent);
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .testimonial p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text);
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .author-info h5 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .author-info span {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Pricing */
+    .pricing {
+      padding: 80px 0;
+      background: var(--bg);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 60px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .pricing-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent);
+      transform: scale(1.05);
+      box-shadow: 0 12px 32px rgba(255, 89, 16, 0.15);
+    }
+
+    .pricing-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 12px 32px rgba(0, 45, 114, 0.1);
+    }
+
+    .pricing-card h3 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .price {
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--accent);
+      margin: 20px 0;
+    }
+
+    .price span {
+      font-size: 18px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin: 32px 0;
+      text-align: left;
+    }
+
+    .pricing-features li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pricing-features li:last-child {
+      border-bottom: none;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    /* CTA */
+    .cta {
+      padding: 80px 0;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .cta p {
+      font-size: 20px;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary-dark);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 60px 0 30px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-section h4 {
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 12px;
+    }
+
+    .footer-section ul li a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-section ul li a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 24px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+
+      .hero {
+        padding: 100px 0 60px;
+      }
+
+      .features-grid,
+      .use-case-grid,
+      .testimonial-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-card.featured {
+        transform: none;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-on-scroll {
+      animation: fadeInUp 0.6s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="#" class="logo">
+          <span class="logo-icon">🏢</span>
+          <span>PropGlue</span>
+        </a>
+        <nav>
+          <a href="#features">Features</a>
+          <a href="#use-cases">Use Cases</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact">Contact</a>
+          <a href="https://app.propglue.com/login" class="btn btn-secondary">Login</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Property Management, <br>Simplified</h1>
+        <p>
+          The all-in-one platform for managing buildings, documents, permits, violations, contractors, and equipment. 
+          Built for NYC property managers who need everything in one place.
+        </p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn-primary">Request Demo</a>
+          <a href="#features" class="btn btn-secondary">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Everything You Need in One Platform</h2>
+        <p>Stop juggling spreadsheets, emails, and file cabinets. PropGlue brings all your property management tools together.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🏢</div>
+          <h3>Building Management</h3>
+          <p>Track properties, floors, units, and occupancy. Maintain complete records for every asset you manage.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📄</div>
+          <h3>Document Storage</h3>
+          <p>Organize permits, leases, COIs, and reports. Find any document in seconds with smart categorization.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h3>NYC DOB Integration</h3>
+          <p>Automatically pull permits and violations from NYC Department of Buildings. Stay compliant effortlessly.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">👷</div>
+          <h3>Contractor Management</h3>
+          <p>Track vendors, verify insurance certificates, and rate performance. Never miss a COI expiration again.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚙️</div>
+          <h3>Equipment Tracking</h3>
+          <p>Maintain HVAC, elevators, and building systems. Schedule preventive maintenance automatically.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Secure Vault</h3>
+          <p>Store sensitive documents with encryption. Control access with role-based permissions.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📸</div>
+          <h3>Photo Documentation</h3>
+          <p>Capture conditions, damage, and progress. Annotate images and link to projects or violations.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Capital Projects</h3>
+          <p>Plan, track, and document renovations and LL improvements. Keep stakeholders informed.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Powerful Search</h3>
+          <p>Find anything instantly across buildings, documents, and records. MeiliSearch-powered speed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section id="use-cases" class="use-cases">
+    <div class="container">
+      <div class="section-header">
+        <h2>Built for Real-World Property Management</h2>
+        <p>Whether you manage 5 buildings or 500, PropGlue adapts to your workflow.</p>
+      </div>
+
+      <div class="use-case-grid">
+        <div class="use-case">
+          <h4>Respond to DOB Violations Faster</h4>
+          <p>Violations auto-imported from NYC DOB. Track remediation, attach photos, and never miss an OATH hearing.</p>
+        </div>
+
+        <div class="use-case">
+          <h4>Organize Permit Documents</h4>
+          <p>Keep permit applications, approvals, and expirations in one place. Get alerts before permits lapse.</p>
+        </div>
+
+        <div class="use-case">
+          <h4>Verify Contractor Insurance</h4>
+          <p>Upload COIs, verify coverage, and track expiration dates. Auto-alert when renewal is due.</p>
+        </div>
+
+        <div class="use-case">
+          <h4>Prepare for Property Sales</h4>
+          <p>Generate comprehensive due diligence packages in minutes. Impress buyers with organized records.</p>
+        </div>
+
+        <div class="use-case">
+          <h4>Defend Against Lawsuits</h4>
+          <p>Maintain timestamped photo evidence and repair logs. Legal hold protects critical documents.</p>
+        </div>
+
+        <div class="use-case">
+          <h4>Track Capital Projects</h4>
+          <p>Monitor budgets, timelines, and vendor invoices. Link documents to projects for full transparency.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <h2>Trusted by Property Managers</h2>
+        <p>See what our customers are saying about PropGlue.</p>
+      </div>
+
+      <div class="testimonial-grid">
+        <div class="testimonial">
+          <div class="quote-icon">"</div>
+          <p>
+            PropGlue saved us during a property sale. We generated a complete due diligence package in under 2 hours. 
+            The buyer was impressed by how organized everything was.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">JD</div>
+            <div class="author-info">
+              <h5>John Doe</h5>
+              <span>Property Manager, Brooklyn</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="quote-icon">"</div>
+          <p>
+            The NYC DOB integration is a game-changer. We used to manually check for violations every week. 
+            Now they just appear in PropGlue automatically.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SM</div>
+            <div class="author-info">
+              <h5>Sarah Martinez</h5>
+              <span>Operations Manager, Queens</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="quote-icon">"</div>
+          <p>
+            We manage 40+ residential buildings and PropGlue keeps everything organized. 
+            Finding documents used to take forever — now it's instant.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">RK</div>
+            <div class="author-info">
+              <h5>Robert Kim</h5>
+              <span>Portfolio Manager, Manhattan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2>Simple, Transparent Pricing</h2>
+        <p>Choose the plan that fits your portfolio. All plans include unlimited users and storage.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <h3>Starter</h3>
+          <div class="price">$199<span>/month</span></div>
+          <ul class="pricing-features">
+            <li>Up to 10 buildings</li>
+            <li>Unlimited users</li>
+            <li>Document storage</li>
+            <li>NYC DOB integration</li>
+            <li>Contractor management</li>
+            <li>Email support</li>
+          </ul>
+          <a href="#contact" class="btn btn-secondary">Get Started</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <h3>Professional</h3>
+          <div class="price">$499<span>/month</span></div>
+          <ul class="pricing-features">
+            <li>Up to 50 buildings</li>
+            <li>Everything in Starter</li>
+            <li>Capital projects</li>
+            <li>Equipment tracking</li>
+            <li>Photo annotations</li>
+            <li>Priority support</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Get Started</a>
+        </div>
+
+        <div class="pricing-card">
+          <h3>Enterprise</h3>
+          <div class="price">Custom</div>
+          <ul class="pricing-features">
+            <li>Unlimited buildings</li>
+            <li>Everything in Professional</li>
+            <li>Custom integrations</li>
+            <li>Dedicated account manager</li>
+            <li>SLA guarantee</li>
+            <li>White-label options</li>
+          </ul>
+          <a href="#contact" class="btn btn-secondary">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contact" class="cta">
+    <div class="container">
+      <h2>Ready to Simplify Your Property Management?</h2>
+      <p>Join property managers across NYC who trust PropGlue.</p>
+      <a href="mailto:mmamakas@greenwiresolutions.com?subject=PropGlue Demo Request" class="btn btn-primary" style="font-size: 18px; padding: 14px 40px;">Request a Demo</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#use-cases">Use Cases</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="https://app.propglue.com">Login</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="mailto:mmamakas@greenwiresolutions.com">Support</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">API</a></li>
+            <li><a href="#">Status</a></li>
+            <li><a href="#">Changelog</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="mailto:mmamakas@greenwiresolutions.com">Email Us</a></li>
+            <li><a href="tel:+15162698930">Call: (516) 269-8930</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 PropGlue by Greenwire Solutions. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
