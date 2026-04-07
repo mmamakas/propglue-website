@@ -256,6 +256,120 @@
       margin-bottom: 12px;
     }
 
+    .feature-card--highlight {
+      border: 2px solid var(--accent);
+      background: linear-gradient(135deg, #fff8f5 0%, #ffffff 100%);
+    }
+
+    .feature-card--highlight h3 {
+      color: var(--accent);
+    }
+
+    /* Tenant Pulse Spotlight */
+    .tenant-pulse-spotlight {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      padding: 100px 0;
+      color: white;
+    }
+
+    .spotlight-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .spotlight-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .spotlight-text h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .spotlight-text p {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .spotlight-list {
+      list-style: none;
+      margin-bottom: 36px;
+    }
+
+    .spotlight-list li {
+      padding: 8px 0;
+      color: rgba(255,255,255,0.9);
+      font-size: 0.95rem;
+    }
+
+    .pulse-demo {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .pulse-header {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .pulse-stat {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #1E293B;
+    }
+
+    .pulse-dot { font-size: 1.2rem; }
+    .pulse-stat.green .pulse-dot { color: #22c55e; }
+    .pulse-stat.yellow .pulse-dot { color: #eab308; }
+    .pulse-stat.orange .pulse-dot { color: #f97316; }
+    .pulse-stat.red .pulse-dot { color: #ef4444; }
+
+    .pulse-divider {
+      height: 1px;
+      background: #E2E8F0;
+      margin: 16px 0;
+    }
+
+    .pulse-alert {
+      background: #FFF7ED;
+      border-left: 3px solid #f97316;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: #9a3412;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .spotlight-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .feature-card p {
       color: var(--text-muted);
       line-height: 1.7;
@@ -649,6 +763,50 @@
           <div class="feature-icon">🔍</div>
           <h3>Powerful Search</h3>
           <p>Find anything instantly across buildings, documents, and records. MeiliSearch-powered speed.</p>
+        </div>
+
+        <div class="feature-card feature-card--highlight">
+          <div class="feature-icon">🫀</div>
+          <h3>Tenant Pulse</h3>
+          <p>Real-time intelligence on your commercial tenants. Monitor news, legal filings, and business signals — know what's happening before they tell you.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Building Transfer</h3>
+          <p>Move buildings between portfolios instantly. Export, import, or directly transfer properties with all documents, tenants, and records intact.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tenant Pulse Spotlight -->
+  <section class="tenant-pulse-spotlight">
+    <div class="container">
+      <div class="spotlight-inner">
+        <div class="spotlight-text">
+          <div class="spotlight-badge">NEW FEATURE</div>
+          <h2>Introducing Tenant Pulse 🫀</h2>
+          <p>Commercial property management is about knowing what's happening with your tenants <em>before</em> they miss rent. Tenant Pulse monitors news, business signals, legal filings, and financial activity — giving every tenant a real-time health score.</p>
+          <ul class="spotlight-list">
+            <li>🟢 Health scores updated daily across your entire portfolio</li>
+            <li>📰 News and press monitoring via real-time search</li>
+            <li>⚖️ Legal risk tracking — lawsuits, bankruptcies, judgments</li>
+            <li>📈 Business signals — funding rounds, layoffs, expansions</li>
+            <li>🔔 Instant alerts when a tenant crosses your risk threshold</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Get Early Access</a>
+        </div>
+        <div class="spotlight-visual">
+          <div class="pulse-demo">
+            <div class="pulse-header">Tenant Portfolio Health</div>
+            <div class="pulse-stat green"><span class="pulse-dot">●</span> 31 Healthy</div>
+            <div class="pulse-stat yellow"><span class="pulse-dot">●</span> 12 Watch</div>
+            <div class="pulse-stat orange"><span class="pulse-dot">●</span> 4 At Risk</div>
+            <div class="pulse-stat red"><span class="pulse-dot">●</span> 1 Critical</div>
+            <div class="pulse-divider"></div>
+            <div class="pulse-alert">⚠️ Acme Corp — score dropped to 38. Layoff news detected.</div>
+          </div>
         </div>
       </div>
     </div>
