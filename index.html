@@ -1,998 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PropGlue - The all-in-one property management platform. Manage buildings, documents, permits, violations, contractors, and equipment in one place.">
-  <meta name="keywords" content="property management, building management, NYC DOB, permits, violations, document management">
-  <title>PropGlue - Property Management Platform</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --primary: #002D72;
-      --primary-dark: #001B45;
-      --accent: #FF5910;
-      --accent-hover: #E84E0E;
-      --bg: #F8FAFC;
-      --card: #FFFFFF;
-      --text: #1E293B;
-      --text-muted: #64748B;
-      --border: #E2E8F0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      line-height: 1.6;
-      color: var(--text);
-      background: var(--bg);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      z-index: 1000;
-      padding: 16px 0;
-    }
-
-    .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--primary);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .logo-icon {
-      background: var(--accent);
-      color: white;
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
-
-    nav {
-      display: flex;
-      gap: 32px;
-      align-items: center;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 500;
-      font-size: 15px;
-      transition: color 0.2s;
-    }
-
-    nav a:hover {
-      color: var(--accent);
-    }
-
-    .btn {
-      padding: 10px 24px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 15px;
-      text-decoration: none;
-      transition: all 0.2s;
-      display: inline-block;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(255, 89, 16, 0.3);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--primary);
-      border: 2px solid var(--primary);
-    }
-
-    .btn-secondary:hover {
-      background: var(--primary);
-      color: white;
-    }
-
-    /* Hero */
-    .hero {
-      padding: 140px 0 80px;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -10%;
-      width: 600px;
-      height: 600px;
-      background: rgba(255, 89, 16, 0.1);
-      border-radius: 50%;
-      filter: blur(80px);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .hero h1 {
-      font-size: clamp(36px, 6vw, 64px);
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 24px;
-      letter-spacing: -0.02em;
-    }
-
-    .hero p {
-      font-size: clamp(18px, 2.5vw, 22px);
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 40px;
-      line-height: 1.6;
-    }
-
-    .hero-cta {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    /* Features */
-    .features {
-      padding: 80px 0;
-      background: white;
-    }
-
-    .section-header {
-      text-align: center;
-      max-width: 700px;
-      margin: 0 auto 60px;
-    }
-
-    .section-header h2 {
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 800;
-      color: var(--primary);
-      margin-bottom: 16px;
-      line-height: 1.2;
-    }
-
-    .section-header p {
-      font-size: 18px;
-      color: var(--text-muted);
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 32px;
-      margin-top: 60px;
-    }
-
-    .feature-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      transition: all 0.3s;
-    }
-
-    .feature-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0, 45, 114, 0.08);
-    }
-
-    .feature-icon {
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, var(--accent), #FF7940);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    .feature-card h3 {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 12px;
-    }
-
-    .feature-card--highlight {
-      border: 2px solid var(--accent);
-      background: linear-gradient(135deg, #fff8f5 0%, #ffffff 100%);
-    }
-
-    .feature-card--highlight h3 {
-      color: var(--accent);
-    }
-
-    /* Tenant Pulse Spotlight */
-    .tenant-pulse-spotlight {
-      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-      padding: 100px 0;
-      color: white;
-    }
-
-    .spotlight-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-
-    .spotlight-badge {
-      display: inline-block;
-      background: var(--accent);
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-    }
-
-    .spotlight-text h2 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-bottom: 20px;
-      color: white;
-    }
-
-    .spotlight-text p {
-      font-size: 1.1rem;
-      color: rgba(255,255,255,0.8);
-      margin-bottom: 28px;
-      line-height: 1.7;
-    }
-
-    .spotlight-list {
-      list-style: none;
-      margin-bottom: 36px;
-    }
-
-    .spotlight-list li {
-      padding: 8px 0;
-      color: rgba(255,255,255,0.9);
-      font-size: 0.95rem;
-    }
-
-    .pulse-demo {
-      background: white;
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-
-    .pulse-header {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #64748B;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 20px;
-    }
-
-    .pulse-stat {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 0;
-      font-weight: 600;
-      font-size: 1rem;
-      color: #1E293B;
-    }
-
-    .pulse-dot { font-size: 1.2rem; }
-    .pulse-stat.green .pulse-dot { color: #22c55e; }
-    .pulse-stat.yellow .pulse-dot { color: #eab308; }
-    .pulse-stat.orange .pulse-dot { color: #f97316; }
-    .pulse-stat.red .pulse-dot { color: #ef4444; }
-
-    .pulse-divider {
-      height: 1px;
-      background: #E2E8F0;
-      margin: 16px 0;
-    }
-
-    .pulse-alert {
-      background: #FFF7ED;
-      border-left: 3px solid #f97316;
-      padding: 10px 14px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      color: #9a3412;
-      font-weight: 500;
-    }
-
-    @media (max-width: 768px) {
-      .spotlight-inner {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .feature-card p {
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
-
-    /* Use Cases */
-    .use-cases {
-      padding: 80px 0;
-      background: var(--bg);
-    }
-
-    .use-case-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-top: 60px;
-    }
-
-    .use-case {
-      background: white;
-      border-radius: 12px;
-      padding: 28px;
-      border-left: 4px solid var(--accent);
-      transition: all 0.3s;
-    }
-
-    .use-case:hover {
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      transform: translateX(4px);
-    }
-
-    .use-case h4 {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 8px;
-    }
-
-    .use-case p {
-      color: var(--text-muted);
-      font-size: 15px;
-    }
-
-    /* Testimonials */
-    .testimonials {
-      padding: 80px 0;
-      background: white;
-    }
-
-    .testimonial-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 32px;
-      margin-top: 60px;
-    }
-
-    .testimonial {
-      background: var(--bg);
-      border-radius: 16px;
-      padding: 32px;
-      position: relative;
-    }
-
-    .quote-icon {
-      font-size: 48px;
-      color: var(--accent);
-      opacity: 0.3;
-      line-height: 1;
-      margin-bottom: 16px;
-    }
-
-    .testimonial p {
-      font-size: 16px;
-      line-height: 1.8;
-      color: var(--text);
-      margin-bottom: 20px;
-      font-style: italic;
-    }
-
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .author-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 18px;
-    }
-
-    .author-info h5 {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--primary);
-    }
-
-    .author-info span {
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
-    /* Pricing */
-    .pricing {
-      padding: 80px 0;
-      background: var(--bg);
-    }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 32px;
-      margin-top: 60px;
-      max-width: 1000px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .pricing-card {
-      background: white;
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 40px;
-      text-align: center;
-      transition: all 0.3s;
-    }
-
-    .pricing-card.featured {
-      border-color: var(--accent);
-      transform: scale(1.05);
-      box-shadow: 0 12px 32px rgba(255, 89, 16, 0.15);
-    }
-
-    .pricing-card:hover {
-      border-color: var(--accent);
-      box-shadow: 0 12px 32px rgba(0, 45, 114, 0.1);
-    }
-
-    .pricing-card h3 {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 12px;
-    }
-
-    .price {
-      font-size: 48px;
-      font-weight: 900;
-      color: var(--accent);
-      margin: 20px 0;
-    }
-
-    .price span {
-      font-size: 18px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .pricing-features {
-      list-style: none;
-      margin: 32px 0;
-      text-align: left;
-    }
-
-    .pricing-features li {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .pricing-features li:last-child {
-      border-bottom: none;
-    }
-
-    .pricing-features li::before {
-      content: '✓';
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 18px;
-    }
-
-    /* CTA */
-    .cta {
-      padding: 80px 0;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      text-align: center;
-    }
-
-    .cta h2 {
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 800;
-      margin-bottom: 20px;
-    }
-
-    .cta p {
-      font-size: 20px;
-      margin-bottom: 40px;
-      opacity: 0.9;
-    }
-
-    /* Footer */
-    footer {
-      background: var(--primary-dark);
-      color: rgba(255, 255, 255, 0.8);
-      padding: 60px 0 30px;
-    }
-
-    .footer-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 40px;
-      margin-bottom: 40px;
-    }
-
-    .footer-section h4 {
-      color: white;
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-
-    .footer-section ul {
-      list-style: none;
-    }
-
-    .footer-section ul li {
-      margin-bottom: 12px;
-    }
-
-    .footer-section ul li a {
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .footer-section ul li a:hover {
-      color: var(--accent);
-    }
-
-    .footer-bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 24px;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      nav {
-        display: none;
-      }
-
-      .hero {
-        padding: 100px 0 60px;
-      }
-
-      .features-grid,
-      .use-case-grid,
-      .testimonial-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .pricing-card.featured {
-        transform: none;
-      }
-    }
-
-    /* Animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .animate-on-scroll {
-      animation: fadeInUp 0.6s ease-out;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PropGlue - Modern Property Management Platform</title>
+    <meta name="description" content="PropGlue is a modern property management SaaS platform for landlords, property managers, and tenants. Streamline maintenance, rent collection, tenant screening, and document management.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Josefin+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F766E',
+                        secondary: '#14B8A6',
+                        cta: '#0369A1',
+                        bg: '#F0FDFA',
+                        text: '#134E4A'
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        body: ['Josefin Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Josefin Sans', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </head>
-<body>
-  <!-- Header -->
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <a href="#" class="logo">
-          <span class="logo-icon">🏢</span>
-          <span>PropGlue</span>
-        </a>
-        <nav>
-          <a href="#features">Features</a>
-          <a href="#use-cases">Use Cases</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#contact">Contact</a>
-          <a href="https://app.propglue.com/login" class="btn btn-secondary">Login</a>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <h1>Property Management, <br>Reimagined</h1>
-        <p>
-          The intelligent, all-in-one platform that empowers property managers to streamline operations, reduce risk, and unlock actionable insights. 
-          Purpose-built for NYC property professionals who demand efficiency and control.
-        </p>
-        <div class="hero-cta">
-          <a href="#contact" class="btn btn-primary">Request Demo</a>
-          <a href="#features" class="btn btn-secondary">Learn More</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section id="features" class="features">
-    <div class="container">
-      <div class="section-header">
-        <h2>A Unified Operating System for Property Management</h2>
-        <p>Eliminate fragmented workflows and data silos. PropGlue consolidates every critical function into a single, intelligent platform that scales with your portfolio.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">🏢</div>
-          <h3>Portfolio Management</h3>
-          <p>Centralize property data, unit-level tracking, and occupancy analytics. Gain complete visibility across your entire portfolio with enterprise-grade asset intelligence.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">📄</div>
-          <h3>Intelligent Document Management</h3>
-          <p>Leverage AI-powered categorization and lightning-fast search to organize permits, leases, COIs, and compliance documents. Retrieve critical files in seconds, not hours.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🔔</div>
-          <h3>Real-Time NYC DOB Sync</h3>
-          <p>Automate permit and violation tracking with live NYC Department of Buildings integration. Ensure regulatory compliance without manual data entry.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">👷</div>
-          <h3>Vendor Intelligence Platform</h3>
-          <p>Streamline contractor onboarding, automate COI expiration alerts, and leverage performance analytics to optimize vendor selection and accountability.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">⚙️</div>
-          <h3>Predictive Maintenance Engine</h3>
-          <p>Monitor critical building systems and schedule proactive maintenance to minimize downtime, extend asset lifecycles, and reduce operating costs.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🔒</div>
-          <h3>Enterprise-Grade Security</h3>
-          <p>Protect sensitive documents with bank-level encryption and granular role-based access controls. Compliance-ready and audit-proof.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">📸</div>
-          <h3>Photo Documentation</h3>
-          <p>Capture conditions, damage, and progress. Annotate images and link to projects or violations.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>Capital Projects</h3>
-          <p>Plan, track, and document renovations and LL improvements. Keep stakeholders informed.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🔍</div>
-          <h3>Powerful Search</h3>
-          <p>Find anything instantly across buildings, documents, and records. MeiliSearch-powered speed.</p>
-        </div>
-
-        <div class="feature-card feature-card--highlight">
-          <div class="feature-icon">🫀</div>
-          <h3>Tenant Pulse™</h3>
-          <p>Proactive tenant risk intelligence powered by real-time monitoring. Track financial health, legal exposure, and business signals to mitigate portfolio risk before issues escalate.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🔄</div>
-          <h3>Building Transfer</h3>
-          <p>Move buildings between portfolios instantly. Export, import, or directly transfer properties with all documents, tenants, and records intact.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Tenant Pulse Spotlight -->
-  <section class="tenant-pulse-spotlight">
-    <div class="container">
-      <div class="spotlight-inner">
-        <div class="spotlight-text">
-          <div class="spotlight-badge">NEW FEATURE</div>
-          <h2>Introducing Tenant Pulse 🫀</h2>
-          <p>Commercial property management is about knowing what's happening with your tenants <em>before</em> they miss rent. Tenant Pulse monitors news, business signals, legal filings, and financial activity — giving every tenant a real-time health score.</p>
-          <ul class="spotlight-list">
-            <li>🟢 Health scores updated daily across your entire portfolio</li>
-            <li>📰 News and press monitoring via real-time search</li>
-            <li>⚖️ Legal risk tracking — lawsuits, bankruptcies, judgments</li>
-            <li>📈 Business signals — funding rounds, layoffs, expansions</li>
-            <li>🔔 Instant alerts when a tenant crosses your risk threshold</li>
-          </ul>
-          <a href="#contact" class="btn btn-primary">Get Early Access</a>
-        </div>
-        <div class="spotlight-visual">
-          <div class="pulse-demo">
-            <div class="pulse-header">Tenant Portfolio Health</div>
-            <div class="pulse-stat green"><span class="pulse-dot">●</span> 31 Healthy</div>
-            <div class="pulse-stat yellow"><span class="pulse-dot">●</span> 12 Watch</div>
-            <div class="pulse-stat orange"><span class="pulse-dot">●</span> 4 At Risk</div>
-            <div class="pulse-stat red"><span class="pulse-dot">●</span> 1 Critical</div>
-            <div class="pulse-divider"></div>
-            <div class="pulse-alert">⚠️ Acme Corp — score dropped to 38. Layoff news detected.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Use Cases -->
-  <section id="use-cases" class="use-cases">
-    <div class="container">
-      <div class="section-header">
-        <h2>Engineered for Scale, Built for Agility</h2>
-        <p>From boutique portfolios to enterprise-level operations, PropGlue delivers a flexible, scalable solution that adapts to your unique requirements.</p>
-      </div>
-
-      <div class="use-case-grid">
-        <div class="use-case">
-          <h4>Respond to DOB Violations Faster</h4>
-          <p>Violations auto-imported from NYC DOB. Track remediation, attach photos, and never miss an OATH hearing.</p>
-        </div>
-
-        <div class="use-case">
-          <h4>Organize Permit Documents</h4>
-          <p>Keep permit applications, approvals, and expirations in one place. Get alerts before permits lapse.</p>
-        </div>
-
-        <div class="use-case">
-          <h4>Verify Contractor Insurance</h4>
-          <p>Upload COIs, verify coverage, and track expiration dates. Auto-alert when renewal is due.</p>
-        </div>
-
-        <div class="use-case">
-          <h4>Prepare for Property Sales</h4>
-          <p>Generate comprehensive due diligence packages in minutes. Impress buyers with organized records.</p>
-        </div>
-
-        <div class="use-case">
-          <h4>Defend Against Lawsuits</h4>
-          <p>Maintain timestamped photo evidence and repair logs. Legal hold protects critical documents.</p>
-        </div>
-
-        <div class="use-case">
-          <h4>Track Capital Projects</h4>
-          <p>Monitor budgets, timelines, and vendor invoices. Link documents to projects for full transparency.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials -->
-  <section class="testimonials">
-    <div class="container">
-      <div class="section-header">
-        <h2>Trusted by Property Managers</h2>
-        <p>See what our customers are saying about PropGlue.</p>
-      </div>
-
-      <div class="testimonial-grid">
-        <div class="testimonial">
-          <div class="quote-icon">"</div>
-          <p>
-            PropGlue saved us during a property sale. We generated a complete due diligence package in under 2 hours. 
-            The buyer was impressed by how organized everything was.
-          </p>
-          <div class="testimonial-author">
-            <div class="author-avatar">JD</div>
-            <div class="author-info">
-              <h5>John Doe</h5>
-              <span>Property Manager, Brooklyn</span>
+<body class="bg-gradient-to-br from-bg via-teal-50 to-cyan-50 text-text">
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 glass-strong">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-heading font-bold text-primary">PropGlue</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" class="text-text hover:text-primary transition-colors duration-200">Features</a>
+                    <a href="#product" class="text-text hover:text-primary transition-colors duration-200">Product</a>
+                    <a href="#pricing" class="text-text hover:text-primary transition-colors duration-200">Pricing</a>
+                </div>
+                <div>
+                    <a href="#demo" class="bg-cta text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-cta focus:ring-offset-2 cursor-pointer">
+                        Request Demo
+                    </a>
+                </div>
             </div>
-          </div>
         </div>
+    </nav>
 
-        <div class="testimonial">
-          <div class="quote-icon">"</div>
-          <p>
-            The NYC DOB integration is a game-changer. We used to manually check for violations every week. 
-            Now they just appear in PropGlue automatically.
-          </p>
-          <div class="testimonial-author">
-            <div class="author-avatar">SM</div>
-            <div class="author-info">
-              <h5>Sarah Martinez</h5>
-              <span>Operations Manager, Queens</span>
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-5xl md:text-6xl font-heading font-bold text-primary mb-6 leading-tight">
+                        Modern Property Management Made Simple
+                    </h1>
+                    <p class="text-xl text-text mb-8 font-body leading-relaxed">
+                        PropGlue streamlines property management for landlords, managers, and tenants. Track maintenance, collect rent, screen tenants, and manage documents—all in one powerful platform.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#demo" class="bg-cta text-white px-8 py-4 rounded-lg hover:bg-opacity-90 transition-all duration-200 hover:shadow-xl hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-cta focus:ring-offset-2 text-center cursor-pointer font-semibold">
+                            Get Started Free
+                        </a>
+                        <a href="#features" class="glass-strong text-primary px-8 py-4 rounded-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 text-center cursor-pointer font-semibold">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                <div class="glass-strong rounded-2xl p-8 shadow-2xl">
+                    <div class="bg-white rounded-lg p-6 shadow-inner">
+                        <div class="h-64 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <span class="text-white text-xl font-heading">Dashboard Preview</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
+    </section>
 
-        <div class="testimonial">
-          <div class="quote-icon">"</div>
-          <p>
-            We manage 40+ residential buildings and PropGlue keeps everything organized. 
-            Finding documents used to take forever — now it's instant.
-          </p>
-          <div class="testimonial-author">
-            <div class="author-avatar">RK</div>
-            <div class="author-info">
-              <h5>Robert Kim</h5>
-              <span>Portfolio Manager, Manhattan</span>
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-heading font-bold text-primary mb-4">
+                    Everything You Need
+                </h2>
+                <p class="text-xl text-text max-w-2xl mx-auto">
+                    Powerful features designed to save time and reduce complexity in property management.
+                </p>
             </div>
-          </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Maintenance Tracking -->
+                <div class="glass-strong rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group">
+                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-lg flex items-center justify-center mb-4 group-hover:bg-opacity-20 transition-colors duration-200">
+                        <i data-lucide="wrench" class="text-primary w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold text-primary mb-3">Maintenance Tracking</h3>
+                    <p class="text-text">Submit, track, and resolve maintenance requests with photos and vendor coordination.</p>
+                </div>
+                
+                <!-- Rent Collection -->
+                <div class="glass-strong rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group">
+                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-lg flex items-center justify-center mb-4 group-hover:bg-opacity-20 transition-colors duration-200">
+                        <i data-lucide="credit-card" class="text-primary w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold text-primary mb-3">Rent Collection</h3>
+                    <p class="text-text">Automated payment processing, late fee handling, and financial reporting.</p>
+                </div>
+                
+                <!-- Tenant Screening -->
+                <div class="glass-strong rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group">
+                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-lg flex items-center justify-center mb-4 group-hover:bg-opacity-20 transition-colors duration-200">
+                        <i data-lucide="user-check" class="text-primary w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold text-primary mb-3">Tenant Screening</h3>
+                    <p class="text-text">Background checks, credit reports, and rental history verification.</p>
+                </div>
+                
+                <!-- Document Management -->
+                <div class="glass-strong rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group">
+                    <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-lg flex items-center justify-center mb-4 group-hover:bg-opacity-20 transition-colors duration-200">
+                        <i data-lucide="file-text" class="text-primary w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold text-primary mb-3">Document Management</h3>
+                    <p class="text-text">Secure storage for leases, invoices, permits, and compliance documents.</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Pricing -->
-  <section id="pricing" class="pricing">
-    <div class="container">
-      <div class="section-header">
-        <h2>Pricing Tailored to Your Portfolio</h2>
-        <p>Flexible plans designed to scale with your business. Contact us for a custom quote based on your portfolio size and requirements.</p>
-      </div>
-
-      <div class="pricing-grid">
-        <div class="pricing-card featured">
-          <h3>Pricing</h3>
-          <div class="price" style="font-size: 36px; color: var(--primary);">TBD</div>
-          <ul class="pricing-features">
-            <li>Custom pricing based on portfolio size</li>
-            <li>Unlimited users included</li>
-            <li>Scalable document storage</li>
-            <li>Full-feature access</li>
-            <li>Dedicated onboarding</li>
-            <li>Priority support</li>
-          </ul>
-          <a href="#contact" class="btn btn-primary">Request Quote</a>
+    <!-- Product Preview Section -->
+    <section id="product" class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-teal-50 to-cyan-100">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-heading font-bold text-primary mb-4">
+                    See PropGlue in Action
+                </h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-strong rounded-xl p-6">
+                    <div class="h-48 bg-gradient-to-br from-primary to-secondary rounded-lg mb-4"></div>
+                    <h3 class="text-lg font-heading font-semibold text-primary mb-2">Dashboard</h3>
+                    <p class="text-text">Real-time overview of all properties and key metrics</p>
+                </div>
+                
+                <div class="glass-strong rounded-xl p-6">
+                    <div class="h-48 bg-gradient-to-br from-secondary to-cta rounded-lg mb-4"></div>
+                    <h3 class="text-lg font-heading font-semibold text-primary mb-2">Mobile App</h3>
+                    <p class="text-text">Manage properties on-the-go from any device</p>
+                </div>
+                
+                <div class="glass-strong rounded-xl p-6">
+                    <div class="h-48 bg-gradient-to-br from-cta to-primary rounded-lg mb-4"></div>
+                    <h3 class="text-lg font-heading font-semibold text-primary mb-2">Notifications</h3>
+                    <p class="text-text">Stay informed with real-time alerts and updates</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CTA -->
-  <section id="contact" class="cta">
-    <div class="container">
-      <h2>Ready to Transform Your Property Operations?</h2>
-      <p>Join forward-thinking property managers across NYC who trust PropGlue to drive efficiency, reduce risk, and deliver measurable ROI.</p>
-      <a href="mailto:mmamakas@greenwiresolutions.com?subject=PropGlue Demo Request" class="btn btn-primary" style="font-size: 18px; padding: 14px 40px;">Request a Demo</a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h4>Product</h4>
-          <ul>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#use-cases">Use Cases</a></li>
-            <li><a href="#pricing">Pricing</a></li>
-            <li><a href="https://app.propglue.com">Login</a></li>
-          </ul>
+    <!-- Social Proof Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="glass-strong rounded-xl p-8 text-center">
+                    <div class="text-4xl font-heading font-bold text-primary mb-2">12,000+</div>
+                    <div class="text-text">Units Managed</div>
+                </div>
+                
+                <div class="glass-strong rounded-xl p-8 text-center">
+                    <div class="text-4xl font-heading font-bold text-primary mb-2">98%</div>
+                    <div class="text-text">Tenant Satisfaction</div>
+                </div>
+                
+                <div class="glass-strong rounded-xl p-8 text-center">
+                    <div class="text-4xl font-heading font-bold text-primary mb-2">45min</div>
+                    <div class="text-text">Saved Daily</div>
+                </div>
+                
+                <div class="glass-strong rounded-xl p-8 text-center">
+                    <div class="text-4xl font-heading font-bold text-primary mb-2">24/7</div>
+                    <div class="text-text">Support</div>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="footer-section">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="mailto:mmamakas@greenwiresolutions.com">Support</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-          </ul>
+    <!-- CTA Section -->
+    <section id="demo" class="py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-strong rounded-2xl p-12 text-center">
+                <h2 class="text-4xl md:text-5xl font-heading font-bold text-primary mb-6">
+                    Ready to Get Started?
+                </h2>
+                <p class="text-xl text-text mb-8 max-w-2xl mx-auto">
+                    Join thousands of property managers who have simplified their workflow with PropGlue.
+                </p>
+                <a href="mailto:hello@propglue.com" class="inline-block bg-cta text-white px-12 py-4 rounded-lg hover:bg-opacity-90 transition-all duration-200 hover:shadow-xl hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-cta focus:ring-offset-2 cursor-pointer text-lg font-semibold">
+                    Request a Demo
+                </a>
+            </div>
         </div>
+    </section>
 
-        <div class="footer-section">
-          <h4>Resources</h4>
-          <ul>
-            <li><a href="#">Documentation</a></li>
-            <li><a href="#">API</a></li>
-            <li><a href="#">Status</a></li>
-            <li><a href="#">Changelog</a></li>
-          </ul>
+    <!-- Footer -->
+    <footer class="py-12 px-4 sm:px-6 lg:px-8 glass-strong">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-heading font-bold text-primary mb-4">PropGlue</h3>
+                    <p class="text-text">Modern property management for the modern landlord.</p>
+                </div>
+                <div>
+                    <h4 class="font-heading font-semibold text-primary mb-4">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-text hover:text-primary transition-colors duration-200">Features</a></li>
+                        <li><a href="#pricing" class="text-text hover:text-primary transition-colors duration-200">Pricing</a></li>
+                        <li><a href="#demo" class="text-text hover:text-primary transition-colors duration-200">Demo</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-heading font-semibold text-primary mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-text hover:text-primary transition-colors duration-200">About</a></li>
+                        <li><a href="#" class="text-text hover:text-primary transition-colors duration-200">Blog</a></li>
+                        <li><a href="#" class="text-text hover:text-primary transition-colors duration-200">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-heading font-semibold text-primary mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-text hover:text-primary transition-colors duration-200">Privacy</a></li>
+                        <li><a href="#" class="text-text hover:text-primary transition-colors duration-200">Terms</a></li>
+                        <li><a href="#" class="text-text hover:text-primary transition-colors duration-200">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-primary border-opacity-20 pt-8 text-center">
+                <p class="text-text">&copy; 2026 PropGlue. All rights reserved.</p>
+            </div>
         </div>
+    </footer>
 
-        <div class="footer-section">
-          <h4>Connect</h4>
-          <ul>
-            <li><a href="mailto:mmamakas@greenwiresolutions.com">Email Us</a></li>
-            <li><a href="tel:+15162698930">Call: (516) 269-8930</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2026 PropGlue by Greenwire Solutions. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
